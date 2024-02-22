@@ -21,6 +21,9 @@ service:
 
 data:
   storage: 1Gi
+  accessMode: ReadWriteMany
+## Some providers only allow ReadWriteOnce  
+#  accessMode: ReadWriteOnce
 
 hbbr:
   replicaCount: 1
