@@ -1,20 +1,40 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rust-hbbs-service
+  name: rust-hbbrs-service
 spec:
-  replicas: {{ .Values.hbbs.replicaCount }}
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: rust-hbbs-service
+      app.kubernetes.io/name: rust-hbbrs-service
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: rust-hbbs-service
+        app.kubernetes.io/name: rust-hbbrs-service
     spec:
       containers:
+        - args:
+            - hbbr
+            - -k
+            - _
+          env:
+            - name: PGID
+              value: "100"
+            - name: PUID
+              value: "1024"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          name: rust-hbbr-service
+          ports:
+            - containerPort: 21117
+            - containerPort: 21119
+          resources:
+            {{- toYaml .Values.hbbr.ressources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /root
+              name: rustdesk-data
         - args:
             - hbbs
             - -r
@@ -40,6 +60,11 @@ spec:
           volumeMounts:
             - mountPath: /root
               name: rustdesk-data
+      restartPolicy: Always
+      volumes:
+        - name: rustdesk-data
+          persistentVolumeClaim:
+            claimName: rustdesk-data
       restartPolicy: Always
       volumes:
         - name: rustdesk-data

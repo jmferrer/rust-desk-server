@@ -9,8 +9,9 @@ image:
 
 url: rust.domain.local
 
+replicaCount: 1
+
 hbbs:
-  replicaCount: 1
   ressources:
     limits:
       cpu: 1
@@ -26,7 +27,6 @@ data:
 #  accessMode: ReadWriteOnce
 
 hbbr:
-  replicaCount: 1
   ressources:
     limits:
       cpu: 1
