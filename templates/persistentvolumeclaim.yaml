@@ -4,7 +4,7 @@ metadata:
   name: rustdesk-data
 spec:
   accessModes:
-    - ReadWriteMany
+    - {{ .Values.data.accessMode }}
   resources:
     requests:
       storage: {{ .Values.data.storage }}
