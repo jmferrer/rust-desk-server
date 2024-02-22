@@ -25,6 +25,7 @@ data:
   accessMode: ReadWriteMany
 ## Some providers only allow ReadWriteOnce  
 #  accessMode: ReadWriteOnce
+  storageClassName: standard
 
 hbbr:
   ressources:
